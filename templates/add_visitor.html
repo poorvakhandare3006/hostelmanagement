@@ -22,13 +22,10 @@
    <section id="formHolder">
 
       <div class="row">
-               <div >
-            <a href="/" class="logo">Back to Home<span>.</span></a>
-         </div>
 
          <!-- Brand Box -->
-         {% comment %} <div class="col-sm-6 brand">
-            <a href="#" class="logo">ABV-IIITM <span>.</span></a>
+         <div class="col-sm-6 brand">
+            <a href="/" class="logo">ABV-IIITM <span>.</span></a>
 
             <div class="heading">
                <h2></h2>
@@ -36,7 +33,7 @@
             </div>
 
 
-         </div> {% endcomment %}
+         </div>
 
 
          <!-- Form Box -->
@@ -45,44 +42,45 @@
             <!-- Login Form -->
             <div class="signup form-peice">
 
-               <div class="row">
-                    <div  class="col-md-10 col-xs-10 col-sm-10">
-                        <br/>
-                        <h2>Gatepass</h2>
-                        <br/>
-                        <div class="modal fade" id="complaint" tabindex="-1" role="dialog" aria-labelledby="complaint" aria-hidden="true"></div>
-                        <table id="gatepass" class="table">
-                            <thead class="thead-dark">
-                            <tr>
-                                <th scope="col">Email</th>
-                                <th scope="col">Date</th>
-                                <th scope="col">Reason</th>
-                                <th scope="col">Destination</th>
-                                <th scope="col">Approve/Cancelled</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {% for gatepass in context %}
-                            <tr>
-                                <td>{{gatepass.email}}</td>
-                                <td>{{gatepass.date}}</td>
-                                <td>{{gatepass.reason}}</td>
-                                <td>{{gatepass.home}}</td>
-                                <td>
-                                {% if gatepass.approved %}
-                                Approved
-                                {% else %}
-                                Not Approved
-                                {% endif %}
-                                
-                        </td>
-                            </tr>
-                            {% endfor %}
-                            </tbody>   
-                        </table> 
-                    </div>
-                    </div>
-                    </div> 
+               <form class="login-form" action="/add_visitor/" method="post">
+                 {% csrf_token %}
+
+
+			
+                  <div class="form-group">
+                     <label for="name">Name </label>
+                     <input type="name" name="name" id="name" required>
+                  </div>
+                  <div class="form-group">
+                     <label for="roll">Roll no of Studnet Visiting </label>
+                     <input type="name" name="roll" id="roll" required>
+                  </div>
+                  <div class="form-group">
+                     <label for="contact">Contact</label>
+                     <input type="name" name="contact" id="contact" required>
+                  </div>
+                  <div class="form-group">
+                     <label for="relation">Relation with above student</label>
+                     <input type="name" name="relation" id="relation" required>
+                  </div>
+                  <div class="form-group">
+                     <label for="reason">Reason </label>
+                     <input type="name" name="reason" id="reason" required>
+                  </div>
+                  <div class="form-group">
+                     <label for="ld">Tentative Leaving date </label>
+                     <input type="name" name="ld" id="ld" required>
+                  </div>
+
+                  <div class="CTA">
+                     <input type="submit" value="Submit">
+                     {% comment %} <a href="#" class="switch">Apply For Membership</a> {% endcomment %}
+                  </div> 
+                  {% comment %} <div class="CTA">
+                     <a href="forgotpassworduser/">Forgot Password ? </a>
+                  </div> {% endcomment %}
+                
+               </form>
                <!-- <form action="forgotpassword/" method="POST">
                    {% csrf_token %}
                   <div class="form-group">
@@ -169,6 +167,7 @@
 
              <a href="#" class="switch">I have an account</a> {% endcomment %}
 
+               </form>
             </div><!-- End Signup Form --> 
          </div>
       </div>

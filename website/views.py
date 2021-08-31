@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.models import User
 from website.models import Gatepass, UserProfile
-from website.models import Timetable,Entry
+from website.models import Entry, Visitor
 from django.core.mail import EmailMessage
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -49,6 +49,7 @@ def loginuser(request):
 				HttpResponse("Inactive User.")
 				return render(request, "room/index.html")
 		else:
+			print("MMMMMMMMMMMMMMM")
 			return render(request, "login_members.html")
 	else:
 		return render(request, "login_members.html")
@@ -77,8 +78,10 @@ def add_student(request):
 			
 			profile = user.userprofile
 			profile.hostel = hostel
+			profile.name=name
 			profile.address = address
 			profile.p_contact = p_contact
+			profile.p_mail = p_email
 			profile.s_contact = s_contact
 			profile.enroll = enroll
 			profile.gender = gender
@@ -149,7 +152,11 @@ def approve_gatepass(request, *args, **kwargs):
 	if(request.user.userprofile.so == True):
 		id = kwargs['id']
 		Gatepass.objects.filter(pk=id).update(approved=True)
-		return render(request, 'so_gatepass.html')
+		context = Gatepass.objects.filter(approved=False)
+		context_dict = {
+			'context':context
+		}
+		return render(request, 'so_gatepass.html',context_dict)
 	else:
 		return render(request, "room/index.html")
 
@@ -263,4 +270,73 @@ def out_students(request):
 
 
 
+
+
+@login_required
+def add_visitor(request):
+	if(request.user.userprofile.guard == True):
+		if request.method == "POST":
+			name = request.POST.get('name', '')
+			roll = request.POST.get('roll', '')
+			contact = request.POST.get('contact', '')
+			relation = request.POST.get('relation', '')
+			reason = request.POST.get('reason', '')
+			ld = request.POST.get('ld', '')
+			left=False
+			user = Visitor(name=name,roll=roll,contact=contact,relation=relation,reason=reason,ld=ld,left=left)
+			user.save()
+			return render(request, 'add_visitor.html')
+		else:
+			return render(request, 'add_visitor.html')
+	else:
+		return render(request, '')
+
+@login_required
+def approve_exit_visitor(request, *args, **kwargs):
+	if(request.user.userprofile.guard == True):
+		id = kwargs['id']
+		Visitor.objects.filter(pk=id).update(left=True)
+		Visitor.objects.filter(pk=id).update(leftd=timezone.now())
+		context = Visitor.objects.filter(left=False)
+		context_dict = {
+			'context':context
+		}
+		return render(request, 'exit_visitor.html',context_dict)
+	else:
+		return render(request, "room/index.html")
+
+
+@login_required
+def exit_visitor(request):
+	if(request.user.userprofile.guard == True):
+		context = Visitor.objects.filter(left=False)
+		context_dict = {
+			'context':context
+		}
+		return render(request, 'exit_visitor.html',context_dict)
+	else:
+		return render(request, '')
+
+
+@login_required
+def exit_visitor_so(request):
+	if(request.user.userprofile.so == True):
+		context = Visitor.objects.filter(left=False)
+		context_dict = {
+			'context':context
+		}
+		return render(request, 'exit_visitor_so.html',context_dict)
+	else:
+		return render(request, '')
+
+@login_required
+def visitor(request):
+	if(request.user.userprofile.guard == True or request.user.userprofile.so == True):
+		context = Visitor.objects.all()
+		context_dict = {
+			'context':context
+		}
+		return render(request, 'visitor.html',context_dict)
+	else:
+		return render(request, '')
 

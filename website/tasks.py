@@ -28,7 +28,7 @@ def send_mail_parents(email):
     print(mail)
     print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
     send_mail(
-            'Campus Time Up',
+            'Campus Time Exceeded',
         f'Hi, you child has been returned campus late for 3 consecutive time today. We urge you to look into this matter. Thanks IIITGwalior',
             'poorvakhandare3006@gmail.com',
             [mail],
@@ -43,6 +43,7 @@ def send_email_to_batch(batch_id,lecture_id):
     for user in UserProfile.objects.filter(batch=batch):
         print(user)
         mail = str(user.roll)+'@iiitg.com'
+        mail = "poorvakhandare1999@gmail.com"
         send_mail(
             f'{lecture.subject_name}',
            f'Hi, your {lecture.subject_name} is schedule from {lecture.start_time} to {lecture.end_time}.',
@@ -56,18 +57,8 @@ def task_send_lecture_email():
     print("HI")
 
     time_now = timezone.localtime(timezone.now()) 
-    time_after_thirty_minute = time_now + timezone.timedelta(minutes=30)
-    print(time_now)
-    print(time_after_thirty_minute)
+    time_after_fifteen_minute = time_now + timezone.timedelta(minutes=15)
+    time_after_thirty_minute = time_now + timezone.timedelta(minutes=60)
     for batch in Batch.objects.all():
-        for lecture in Lecture.objects.filter(batch=batch,start_time_gte=time_now,start_time_lte=time_after_thirty_minute):
+        for lecture in Lecture.objects.filter(batch=batch,start_time__gt=time_after_fifteen_minute,start_time__lte=time_after_thirty_minute):
             send_email_to_batch.delay(batch.id,lecture.id)
-            # #mail at 10.30 who are out
-
-# obj = User.objects.all()
-# for val in  obj:
-# 	person = UserProfile.objects.filter(user=val).first()
-# 	if(person.out==True):
-# 		to_mail = str(person.roll)+'@iiitg.com'
-# 		content = "Time is up! It's 11pm. You are requested to reach the campus soon."
-# 		#send mail to come early

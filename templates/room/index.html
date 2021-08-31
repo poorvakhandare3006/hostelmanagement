@@ -298,21 +298,19 @@
                 <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"><span
                         class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
                 </a>
-                <h1 class="brand"><a href="https://www.iiitm.ac.in/">Home</a></h1>
+                <h1 class="brand"><a href="/">Home</a></h1>
                 <!-- navigation -->
                 <nav class="pull-right nav-collapse collapse">
                     <ul id="menu-main" class="nav">
                         {% if user.username != "" %}
                         <li><a href="#">Hi {{user.username}}!</a></li>
                         {% endif %}
-                        <li><a title="team" href="#about">About</a></li>
-                        {% comment %} <li><a title="rooms" href="#rooms">Rooms</a></li> {% endcomment %}
                         {% if user.userprofile.academics %}
                         <li><a href="/add_student">Add Student</a></li> 
                         {% endif %}
-                        {% if user.userprofile.academics %}
+                        {% comment %} {% if user.userprofile.academics %}
                         <li><a href="/add_timetable">Add Timetable</a></li> 
-                        {% endif %}
+                        {% endif %} {% endcomment %}
                         {% if user.userprofile.student %}
                         <li><a href="/gatepass"> Apply Gatepass</a></li> 
                         {% endif %}
@@ -334,7 +332,18 @@
                          {% if user.userprofile.guard or user.userprofile.so %}
                         <li><a href="/out_students">Students(out)</a></li> 
                         {% endif %}
-                        <li><a title="services" href="#services">Services</a></li>
+                        {% if user.userprofile.guard %}
+                        <li><a href="/add_visitor">Add Visitor</a></li> 
+                        {% endif %}
+                        {% if user.userprofile.guard %}
+                        <li><a href="/exit_visitor">Exit Visitor</a></li> 
+                        {% endif %}
+                        {% if user.userprofile.so %}
+                        <li><a href="/exit_visitor_so">Visitors(in_campus)</a></li> 
+                        {% endif %}
+                        {% if user.userprofile.guard or user.userprofile.so %}
+                        <li><a href="/visitor">Visitors</a></li> 
+                        {% endif %}
 
                         <!--<li><a title="Book Your Room" href="/bookroom/">BOOK YOUR ROOM</a></li>-->
                         <!-- <li><div class="dropdown">

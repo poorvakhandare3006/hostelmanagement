@@ -31,12 +31,17 @@ urlpatterns = [
     path('add_timetable/',views.add_timetable,name='add_timetable'),
     path('gatepass/',views.gatepass,name='gatepass'),
     path(r'^approve_gatepass/(?P<id>\d+)/$',views.approve_gatepass,name='approve_gatepass'),
+    path(r'^approve_exit_visitor/(?P<id>\d+)/$',views.approve_exit_visitor,name='approve_exit_visitor'),
     path('so_gatepass/',views.so_gatepass,name='so_gatepass'),
     path('student_gatepass/',views.student_gatepass,name='student_gatepass'),
     path('add_entry/',views.add_entry,name='add_entry'),
     path('add_exit/',views.add_exit,name='add_exit'),
     path('view_history/',views.view_history,name='view_history'),
     path('out_students/',views.out_students,name='out_students'),
+    path('add_visitor/',views.add_visitor,name='add_visitor'),
+    path('exit_visitor/',views.exit_visitor,name='exit_visitor'),
+    path('exit_visitor_so/',views.exit_visitor_so,name='exit_visitor_so'),
+    path('visitor/',views.visitor,name='visitor'),
 
 
 ]
